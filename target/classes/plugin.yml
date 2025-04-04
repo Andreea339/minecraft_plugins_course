@@ -1,0 +1,11 @@
+name: FirstPlugin
+version: '1.0-SNAPSHOT'
+main: com.andreea.test.Main
+api-version: '1.20'
+commands:
+  heal:
+    description: healing the health of a player
+  test:
+  console:
+  config:
+  permission:

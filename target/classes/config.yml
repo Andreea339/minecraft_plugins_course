@@ -1,0 +1,8 @@
+Word: 'Banana'
+# Hello this is a comment
+Number: 89
+Enabled: true
+String-list:
+  - 'Value1'
+  - 'Value2'
+  - 'Value3'
