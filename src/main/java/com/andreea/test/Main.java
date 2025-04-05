@@ -8,6 +8,7 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -44,6 +46,15 @@ public final class Main extends JavaPlugin implements Listener {
                 BarFlag.DARKEN_SKY
         );
 
+        // Player player = null;
+        // player.getWorld().setStorm(true); // this doesn't work as it is
+        // Time works different, in ticks
+        // 6 am -> 0 or 24000
+        // 12pm (midday) -> 6000
+        // 6pm -> 12000
+        // 12am (midnight) -> 18000
+        // player.getWorld().setTime(1200);
+
         // Some commands
 
         getConfig().options().copyDefaults();
@@ -62,18 +73,27 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e) {
-        Firework firework = e.getPlayer().getWorld().spawn(e.getPlayer().getLocation(), Firework.class);
-        FireworkMeta meta = (FireworkMeta) firework.getFireworkMeta();
-        meta.addEffect(FireworkEffect.builder().withColor(Color.FUCHSIA).withColor(Color.YELLOW).with(Type.STAR).withFlicker().build());
-        // Power of the firework, from 1-3
-        meta.setPower(2);
-        firework.setFireworkMeta(meta);
+//        Firework firework = e.getPlayer().getWorld().spawn(e.getPlayer().getLocation(), Firework.class);
+//        FireworkMeta meta = (FireworkMeta) firework.getFireworkMeta();
+//        meta.addEffect(FireworkEffect.builder().withColor(Color.FUCHSIA).withColor(Color.YELLOW).with(Type.STAR).withFlicker().build());
+//        // Power of the firework, from 1-3
+//        meta.setPower(2);
+//        firework.setFireworkMeta(meta);
+        //e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_BAMBOO_WOOD_HANGING_SIGN_BREAK, 1.5F, 1.0F);
+//        Music block sounds in game and discs
+//        if (e.isSneaking()) {
+//            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_FLUTE, 1, 0.79F);
+//            e.getPlayer().playEffect(new Location(Bukkit.getWorld("world"), -60, 64, -9),
+//                    Effect.RECORD_PLAY, Material.MUSIC_DISC_CAT);
+//        }
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 3));
+        // Potion effects
+        // Duration is in ticks, so in a second there are 20 ticks
+        //e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 3));
 
 //         This is for removing or adding potion effects to a player
 //        for (PotionEffect effect : e.getPlayer().getActivePotionEffects()) {
