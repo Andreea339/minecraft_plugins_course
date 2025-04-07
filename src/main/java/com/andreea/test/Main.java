@@ -6,17 +6,21 @@ import org.bukkit.Color;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -34,6 +38,8 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+
+        Bukkit.getPluginManager().registerEvents(new ToggleListener(), this);
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -65,10 +71,28 @@ public final class Main extends JavaPlugin implements Listener {
         getCommand("config").setExecutor(new ConfigCommand(this));
         getCommand("permission").setExecutor(new PermissionCommand());
 
+        getCommand("vanish").setExecutor(new VanishCommand());
+
 
         // To spawn an entity at a specific location
         Bukkit.getWorld("world").spawnEntity(new Location(Bukkit.getWorld("world"), 0, 61, 0), EntityType.BEE);
 
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+
+        Player player = e.getPlayer();
+
+        if (e.getHand().equals(EquipmentSlot.HAND)) {
+            if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (player.getInventory().getItemInMainHand() != null
+                        && player.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_HOE)) {
+                    player.launchProjectile(Egg.class, player.getLocation().getDirection());
+                }
+
+            }
+        }
     }
 
     @EventHandler
@@ -88,8 +112,14 @@ public final class Main extends JavaPlugin implements Listener {
 //        }
     }
 
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+
+        // Particles are there, but they need an event to actually activate them
+        Player player = e.getPlayer();
+        Bukkit.getLogger().info("onJoin fired for " + player.getName());
+        player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().clone().add(0,2,0), 30);
 
         // Potion effects
         // Duration is in ticks, so in a second there are 20 ticks

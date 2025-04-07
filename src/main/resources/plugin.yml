@@ -9,3 +9,6 @@ commands:
   console:
   config:
   permission:
+  testparticles:
+    description: Test particle effect
+  vanish:
