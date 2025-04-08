@@ -1,6 +1,10 @@
 com\andreea\test\HealCommand.class
+com\andreea\test\VanishCommand.class
+com\andreea\test\ToggleListener.class
 com\andreea\test\ConfigCommand.class
 com\andreea\test\PermissionCommand.class
+com\andreea\test\BookCommand.class
 com\andreea\test\ConsoleCommand.class
 com\andreea\test\Main.class
 com\andreea\test\TestCommand.class
+com\andreea\test\GunsPlugin.class

@@ -11,3 +11,5 @@ commands:
   permission:
   testparticles:
     description: Test particle effect
+  vanish:
+  book:
