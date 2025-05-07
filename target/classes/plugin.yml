@@ -13,3 +13,6 @@ commands:
     description: Test particle effect
   vanish:
   book:
+  banner:
+    description: Gives the player a custom made banner
+  punish:
