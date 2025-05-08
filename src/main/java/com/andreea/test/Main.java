@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
@@ -44,7 +45,6 @@ public final class Main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
 
         // Bar that appears at the top of the screen all the time
-        Bukkit.getPluginManager().registerEvents(this, this);
         bossBar = Bukkit.createBossBar(
                 ChatColor.LIGHT_PURPLE + "This server is awesome",
                 BarColor.PURPLE,
@@ -78,6 +78,8 @@ public final class Main extends JavaPlugin implements Listener {
         getCommand("banner").setExecutor(new BannerCommand());
 
         getCommand("punish").setExecutor(new PunishCommand());
+
+        getCommand("timePlayed").setExecutor(new TimePlayedCommand());
 
 
         // To spawn an entity at a specific location
@@ -118,9 +120,31 @@ public final class Main extends JavaPlugin implements Listener {
 //        }
     }
 
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player player = e.getPlayer();
+
+        ItemStack diamondHoe = new ItemStack(Material.DIAMOND_HOE);
+
+        if (e.getBlock().getType() == Material.DIRT) {
+            int currentDirtMined = player.getStatistic(Statistic.MINE_BLOCK, Material.DIRT);
+
+            if (currentDirtMined + 1 == 63) {
+                e.getPlayer().getInventory().addItem(diamondHoe);
+                player.sendMessage(ChatColor.RED + "You earned yourself a " + ChatColor.AQUA + "diamond hoe " + ChatColor.RED + "for being such a landscaper");
+            }
+        }
+
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+
+        // These prints show the statistic on the console, not in the game itself
+        System.out.println(e.getPlayer().getStatistic(Statistic.DROP_COUNT));
+
+        System.out.println(e.getPlayer().getStatistic(Statistic.CRAFT_ITEM, Material.LEATHER_BOOTS));
+
 
         // Particles are there, but they need an event to actually activate them
         Player player = e.getPlayer();
@@ -185,5 +209,16 @@ public final class Main extends JavaPlugin implements Listener {
     public void onPlayerEggThrow(PlayerEggThrowEvent e) {
 
         e.getPlayer().sendMessage(ChatColor.AQUA + "You threw and egg :) ");
+    }
+
+    @EventHandler
+    public void onEntityInteract(PlayerInteractAtEntityEvent e) {
+
+        if (e.getPlayer().isSneaking()) {
+            e.getPlayer().addPassenger(e.getRightClicked());
+        } else {
+            e.getRightClicked().addPassenger(e.getPlayer());
+        }
+
     }
 }

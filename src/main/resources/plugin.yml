@@ -16,3 +16,5 @@ commands:
   banner:
     description: Gives the player a custom made banner
   punish:
+  timePlayed:
+    description: Gived the time that a player has been on the server
