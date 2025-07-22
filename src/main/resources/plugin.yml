@@ -3,6 +3,8 @@ version: '${project.version}'
 main: com.andreea.test.Main
 api-version: '1.20'
 commands:
+  menu:
+    description: Opens a GUI menu
   heal:
     description: healing the health of a player
   test:
@@ -14,7 +16,13 @@ commands:
   vanish:
   book:
   banner:
-    description: Gives the player a custom made banner
+    description: Gives the player a custom-made banner
   punish:
   timePlayed:
-    description: Gived the time that a player has been on the server
+    description: Gives the time that a player has been on the server
+  message:
+  reply:
+  fruit:
+  boost:
+  cooldown:
+  hologram:
